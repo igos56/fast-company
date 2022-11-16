@@ -10,18 +10,20 @@ const Users = () => {
     };
 
     const renderPhrase = number => {
-        const exсeptions = [2, 3, 4];
+        const exсeptions = [2, 3, 4, 12, 13, 14];
         let typeOfPhrase = 'человек';
 
-        if (exсeptions.includes(number % 20)) {
+        if (number > 11 && number <=14) {
+            typeOfPhrase = 'человек';
+        } else if (exсeptions.includes(number % 20)) {
             typeOfPhrase = 'человека';
         }
 
         return `${number} ${typeOfPhrase} тусанет с тобой сегодня`;
     };
 
-    const renderQualities = (user) => {
-        const result = user.qualities.map(quality => {
+    const renderQualities = (qualities) => {
+        const result = qualities.map(quality => {
             const qualityStyles = 'me-2 mb-2 p-2 badge bg-' + quality.color;
 
             return (
@@ -49,13 +51,17 @@ const Users = () => {
         );
     };
 
-    if (users.length === 0) {
-        return <h1><span className="badge bg-danger">Никто с тобой не тусанет ...</span></h1>
-    }
+    const renderInfoBadge = () => {
+        if (users.length === 0) {
+            return <h1><span className="badge bg-danger">Никто с тобой не тусанет ...</span></h1>;
+        }
+
+        return <h1><span className="badge bg-primary">{renderPhrase(users.length)}</span></h1>;
+    };
 
     return(
         <>
-            <h1><span className="badge bg-primary">{renderPhrase(users.length)}</span></h1>
+            {renderInfoBadge()}
             <table className="table">
                 <thead>
                     <tr>
@@ -71,7 +77,7 @@ const Users = () => {
                         return (
                             <tr key={user._id}>
                                 <td>{user.name}</td>
-                                <td>{renderQualities(user)}</td>
+                                <td>{renderQualities(user.qualities)}</td>
                                 <td>{user.profession.name}</td>
                                 <td>{user.completedMeetings}</td>
                                 <td>{getFormatRate(user)}</td>
